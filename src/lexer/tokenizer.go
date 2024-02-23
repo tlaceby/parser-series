@@ -94,6 +94,7 @@ func createLexer(source string) *lexer {
 			{regexp.MustCompile(`>`), defaultHandler(GREATER, ">")},
 			{regexp.MustCompile(`\|\|`), defaultHandler(OR, "||")},
 			{regexp.MustCompile(`&&`), defaultHandler(AND, "&&")},
+			{regexp.MustCompile(`\.\.`), defaultHandler(DOT_DOT, "..")},
 			{regexp.MustCompile(`\.`), defaultHandler(DOT, ".")},
 			{regexp.MustCompile(`;`), defaultHandler(SEMI_COLON, ";")},
 			{regexp.MustCompile(`:`), defaultHandler(COLON, ":")},

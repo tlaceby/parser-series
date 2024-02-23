@@ -38,6 +38,7 @@ const (
 
 	// Symbols
 	DOT
+	DOT_DOT
 	SEMI_COLON
 	COLON
 	QUESTION
@@ -71,6 +72,7 @@ const (
 	FOR
 	EXPORT
 	TYPEOF
+	IN
 
 	// Misc
 	NUM_TOKENS
@@ -93,6 +95,7 @@ var reserved_lu map[string]TokenKind = map[string]TokenKind{
 	"for":     FOR,
 	"export":  EXPORT,
 	"typeof":  TYPEOF,
+	"in":  IN,
 }
 
 type Token struct {
@@ -156,6 +159,8 @@ func tokenKindString(kind TokenKind) string {
 		return "and"
 	case DOT:
 		return "dot"
+	case DOT_DOT:
+		return "dot_dot"
 	case SEMI_COLON:
 		return "semi_colon"
 	case COLON:
@@ -208,8 +213,8 @@ func tokenKindString(kind TokenKind) string {
 		return "while"
 	case EXPORT:
 		return "export"
-	case TYPEOF:
-		return "typeof"
+	case IN:
+		return "in"
 	default:
 		return fmt.Sprintf("unknown(%d)", kind)
 	}
