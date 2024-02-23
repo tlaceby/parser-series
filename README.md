@@ -4,6 +4,23 @@ This series will cover and introduction of writing a lexer/parser in the Go prog
 
 The language we will be building will be derivation of the golang. It will be assumed experience in the golang as a preq aswell as a general experience with complex programming, recursion, logic and some basic tree traversal.
 
+
+## Topics
+
+- **Lexing**
+  - Simple Iteration vs _Regex_
+  - Error Generation
+    - Recoverable vs Fatal Errors
+  - Implimenting a basic lexer for arithmetic expressions.
+  - Keywords/Reserved words
+  - Floating Point & Hexadecimal
+  - Extra / Msc - Template Strings - Character Escaping
+- **Parsing**
+  - Pratt Parser
+  - Translating between AST Forms
+  - Recursive Descent
+
+
 ## Language Syntax
 
 ```ts
@@ -70,18 +87,3 @@ const person = {
 
 
 ```
-
-## Topics
-
-- **Lexing**
-  - Simple Iteration vs _Regex_
-  - Error Generation
-    - Recoverable vs Fatal Errors
-  - Implimenting a basic lexer for arithmetic expressions.
-  - Keywords/Reserved words
-  - Floating Point & Hexadecimal
-  - Extra / Msc - Template Strings - Character Escaping
-- **Parsing**
-  - Pratt Parser
-  - Translating between AST Forms
-  - Recursive Descent
