@@ -73,9 +73,9 @@ res ??= "odd";
 
 // Objects & Classes
 class Person {
-    fn mount (self, name, age) {
-        self.name = name;
-        self.age = age;
+    fn mount (name, age) {
+        this.name = name;
+        this.age = age;
     }
 }
 
