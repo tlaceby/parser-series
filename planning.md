@@ -33,7 +33,6 @@ fn add (x, y) {
     x + y; // Last statement evaluated inside a block is returned
 }
 
-
 typeof math          // object
 typeof "Hello world" // string
 typeof 45.5          // number
