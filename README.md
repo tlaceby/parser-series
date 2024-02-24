@@ -4,7 +4,7 @@ This series will cover and introduction of writing a lexer/parser in the Go prog
 
 The language we will be building will be derivation of the golang. It will be assumed experience in the golang as a preq aswell as a general experience with complex programming, recursion, logic and some basic tree traversal.
 
-The language will also be able to handle static types and explicit/infered typings. I will also be demonstrating how to impliment syntactic sugar for things `foo ??= 10` and `[0..10]`. 
+The language will also be able to handle static types and explicit/ types. Through this series you will learn how to come up with your own syntax from idea to ast. At the end of the series you will have a AST made which represents a complex language which you can take and extend further and either use for code-generation or a interpreter/vm. 
 
 
 ## Topics
