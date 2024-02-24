@@ -49,12 +49,14 @@ import myLib from "../lib/myLib.lang";
 
 In this language, you can declare variables using const for constants that cannot be reassigned, and let for variables whose values can change. Types can be explicitly defined, such as []number for an array of numbers, or inferred by the type checker if not specified.
 
+You will also see a custom syntax `MIN..MAX` when constructing the numbers array. This series will also demonstrate how easy it can be to add custom and unique syntax similar to the range-expression in Rust.
+
 ```ts
 const MIN = 1;
 const MAX = 100;
 
 let numbers: []number;
-numbers = MIN..MAX;
+numbers = MIN..MAX; // returns the numbers [1, 2, 3, ..., 99, 100] as an array.
 
 ```
 
@@ -153,7 +155,7 @@ const MIN = 1;
 const MAX = 100;
 
 let numbers: []number;
-numbers = MIN..MAX;
+numbers = MIN..MAX; // returns the numbers [1, 2, 3, ..., 99, 100] as an array.
 
 if random.selectOne(choices) == 50 {
   println("Your number was selected!");
