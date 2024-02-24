@@ -1,0 +1,59 @@
+import fs;
+import tasks;
+import myLib from "../lib/myLib.lang";
+
+const MIN = 1;
+const MAX = 100;
+const numbers: []number = MIN..MAX;
+
+if random.selectOne(choices) == 50 {
+  println("Your number was selected!");
+} else {
+  println("Your number was not selected");
+}
+
+foreach value, index in choices {
+    println(value, index);
+}
+
+foreach value in choices {
+    println(value);
+}
+
+// class Person {
+//   let name: string;
+//   let age: number;
+//   let languages = ["Go", "Javascript"];
+
+//   fn mount (name: string, age: number) {
+//     this.age = age;
+//   }
+
+//   fn birthday () {
+//     this.age += 1;
+//   }
+
+//   fn greet () {
+//     println("Hello my name is ", this.name);
+//   }
+// }
+
+// const p1 = new Person ("John Doe", 43);
+
+fn abs (n: number): number {
+	if n >= 0 {
+		n;
+	}
+
+	-n;
+}
+
+const add = fn(x: number, y: number): number {
+	x + y;
+};
+
+tasks.interval(fn(task: TaskInfo){
+	if task.time > time.second * 10 {
+		tasks.kill(task.id);
+	}
+}, 1000);

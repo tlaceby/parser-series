@@ -1,7 +1,6 @@
 package parser
 
 import (
-	"errors"
 	"fmt"
 	"github.com/tlaceby/parser-series/src/lexer"
 )
@@ -20,12 +19,8 @@ func (p *parser) hasTokens () bool {
 	return p.pos < len(p.tokens) && p.currentTokenKind() != lexer.EOF
 }
 
-func (p *parser) nextToken () (lexer.Token, error) {
-	if p.pos >= len(p.tokens) {
-		return lexer.Token{}, errors.New("")
-	}
-
-	return p.tokens[p.pos + 1], nil
+func (p *parser) nextToken () lexer.Token {
+	return p.tokens[p.pos + 1]
 }
 
 func (p *parser) previousToken () lexer.Token {

@@ -60,8 +60,8 @@ type MemberExpr struct {
 func (n MemberExpr) expr () {}
 
 type CallExpr struct {
-	Arguments []Expr
 	Method Expr
+	Arguments []Expr
 }
 
 func (n CallExpr) expr () {}
@@ -73,3 +73,18 @@ type ComputedExpr struct {
 }
 
 func (n ComputedExpr) expr () {}
+
+type RangeExpr struct {
+	Lower Expr
+	Upper Expr
+}
+
+func (n RangeExpr) expr () {}
+
+type FunctionExpr struct {
+	Parameters []Parameter
+	Body []Stmt
+	ReturnType Type
+}
+
+func (n FunctionExpr) expr () {}

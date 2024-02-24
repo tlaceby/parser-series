@@ -4,7 +4,7 @@ This series will cover and introduction of writing a lexer/parser in the Go prog
 
 The language we will be building will be derivation of the golang. It will be assumed experience in the golang as a preq aswell as a general experience with complex programming, recursion, logic and some basic tree traversal.
 
-The language will also be able to handle static types and explicit/ types. Through this series you will learn how to come up with your own syntax from idea to ast. At the end of the series you will have a AST made which represents a complex language which you can take and extend further and either use for code-generation or a interpreter/vm. 
+The language will also be able to handle static types and explicit/ types. Through this series you will learn how to come up with your own syntax from idea to ast. At the end of the series you will have a AST made which represents a complex language which you can take and extend further and either use for code-generation or a interpreter/vm.
 
 
 ## Topics
@@ -35,18 +35,18 @@ let name: string = "Tyler"; // explicit types
 
 println("Hello world")
 
-foreach (value in [1..10]) {
+foreach value in 1..10 {
     println(value);
 }
 
-if (math.randint(100) >= 21) {
+if math.randint(100) >= 21 {
     println("You may have a drink");
 } else {
     println("You must be 21 to enjoy a drink");
 }
 
 // Function Declarations
-fn add (x number, y number): number {
+fn add (x number, y number): []number {
     x + y; // Last statement evaluated inside a block is returned
 }
 
@@ -63,13 +63,8 @@ nums[2] = 10;
 println(len("hello")) // 5
 println(string.lowercase("HELLO")) // hello
 
-// If is an expression not a statement.
-let res = if (math.randint(10) % 2 == 0) {
-    "even"
-}
 
 // Fancy assignment if null syntax
 res ??= "odd";
-
 
 ```

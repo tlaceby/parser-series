@@ -59,12 +59,15 @@ func createTokenLookups () {
 	// Logical
 	led(lexer.AND, logical, parse_binary_expr)
 	led(lexer.OR, logical, parse_binary_expr)
+	led(lexer.DOT_DOT, logical, parse_range_expr)
 
 	// Relational
 	led(lexer.LESS, relational, parse_binary_expr)
 	led(lexer.LESS_EQUALS, relational, parse_binary_expr)
 	led(lexer.GREATER, relational, parse_binary_expr)
 	led(lexer.GREATER_EQUALS, relational, parse_binary_expr)
+	led(lexer.EQUALS, relational, parse_binary_expr)
+	led(lexer.NOT_EQUALS, relational, parse_binary_expr)
 
 	// Additive & Multiplicitave
 	led(lexer.PLUS, additive, parse_binary_expr)
@@ -90,9 +93,13 @@ func createTokenLookups () {
 
 	// Grouping Expr
 	nud(lexer.OPEN_PAREN, defalt_bp, parse_grouping_expr)
+	nud(lexer.FN, defalt_bp, parse_fn_expr)
 
 	stmt(lexer.OPEN_CURLY, parse_block_stmt)
 	stmt(lexer.LET, parse_var_decl_stmt)
 	stmt(lexer.CONST, parse_var_decl_stmt)
 	stmt(lexer.FN, parse_fn_declaration)
+	stmt(lexer.IF, parse_if_stmt)
+	stmt(lexer.IMPORT, parse_import_stmt)
+	stmt(lexer.FOREACH, parse_foreach_stmt)
 }

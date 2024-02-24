@@ -38,6 +38,7 @@ func createTypeTokenLookups () {
 		}
 	})
 
+	// []number
 	type_nud(lexer.OPEN_BRACKET	, member, func(p *parser) ast.Type {
 		p.advance()
 		p.expect(lexer.CLOSE_BRACKET)

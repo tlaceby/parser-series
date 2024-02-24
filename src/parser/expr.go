@@ -52,6 +52,15 @@ func parse_assignment_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr
 		}
 	}
 
+func parse_range_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr {
+	p.advance()
+
+	return ast.RangeExpr{
+		Lower: left,
+		Upper: parse_expr(p, bp),
+	}
+}
+
 func parse_binary_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr {
 	operatorToken := p.advance()
 	right := parse_expr(p, defalt_bp)
@@ -109,20 +118,31 @@ func parse_grouping_expr (p *parser) ast.Expr {
 }
 
 func parse_call_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr {
-		p.advance()
-		arguments := make([]ast.Expr, 0)
+	p.advance()
+	arguments := make([]ast.Expr, 0)
 
-		for p.hasTokens() && p.currentTokenKind() != lexer.CLOSE_PAREN {
-			arguments = append(arguments, parse_expr(p, assignment))
+	for p.hasTokens() && p.currentTokenKind() != lexer.CLOSE_PAREN {
+		arguments = append(arguments, parse_expr(p, assignment))
 
-			if !p.currentToken().IsOneOfMany(lexer.EOF, lexer.CLOSE_PAREN) {
-				p.expect(lexer.COMMA)
-			}
-		}
-
-		p.expect(lexer.CLOSE_PAREN)
-		return ast.CallExpr{
-			Method: left,
-			Arguments: arguments,
+		if !p.currentToken().IsOneOfMany(lexer.EOF, lexer.CLOSE_PAREN) {
+			p.expect(lexer.COMMA)
 		}
 	}
+
+	p.expect(lexer.CLOSE_PAREN)
+	return ast.CallExpr{
+		Method: left,
+		Arguments: arguments,
+	}
+}
+
+func parse_fn_expr (p *parser) ast.Expr {
+	p.expect(lexer.FN)
+	functionParams, returnType, functionBody := parse_fn_params_and_body(p)
+
+	return ast.FunctionExpr{
+		Parameters: functionParams,
+		ReturnType: returnType,
+		Body: functionBody,
+	}
+}

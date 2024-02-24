@@ -66,9 +66,7 @@ func parse_var_decl_stmt (p *parser) ast.Stmt {
 	}
 }
 
-func parse_fn_declaration (p *parser) ast.Stmt {
-	p.advance()
-	functionName := p.expect(lexer.IDENTIFIER).Value
+func parse_fn_params_and_body (p *parser) ([]ast.Parameter, ast.Type, []ast.Stmt) {
 	functionParams := make([]ast.Parameter, 0)
 
 	p.expect(lexer.OPEN_PAREN)
@@ -96,10 +94,84 @@ func parse_fn_declaration (p *parser) ast.Stmt {
 	}
 
 	functionBody := ast.ExpectStmt[ast.BlockStmt](parse_block_stmt(p)).Body
+
+	return functionParams, returnType, functionBody
+}
+
+func parse_fn_declaration (p *parser) ast.Stmt {
+	p.advance()
+	functionName := p.expect(lexer.IDENTIFIER).Value
+	functionParams, returnType, functionBody := parse_fn_params_and_body(p)
+
 	return ast.FunctionDeclarationStmt{
 		Parameters: functionParams,
 		ReturnType: returnType,
 		Body: functionBody,
 		Name: functionName,
+	}
+}
+
+func parse_if_stmt (p *parser) ast.Stmt {
+	p.advance()
+	condition := parse_expr(p, assignment)
+	consequent := parse_block_stmt(p)
+
+	var alternate ast.Stmt
+	if p.currentTokenKind() == lexer.ELSE {
+		p.advance()
+
+		if p.currentTokenKind() == lexer.IF {
+			alternate = parse_if_stmt(p)
+		} else {
+			alternate = parse_block_stmt(p)
+		}
+	}
+
+	return ast.IfStmt{
+		Condition: condition,
+		Consequent: consequent,
+		Alternate: alternate,
+	}
+}
+
+func parse_import_stmt (p *parser) ast.Stmt {
+	p.advance()
+	var importFrom string
+	importName := p.expect(lexer.IDENTIFIER).Value
+
+	if p.currentTokenKind() == lexer.FROM {
+		p.advance()
+		importFrom = p.expect(lexer.STRING).Value
+	} else {
+		importFrom = importName
+	}
+
+	p.expect(lexer.SEMI_COLON)
+	return ast.ImportStmt{
+		Name: importName,
+		From: importFrom,
+	}
+}
+
+func parse_foreach_stmt (p *parser) ast.Stmt {
+	p.advance()
+	valueName := p.expect(lexer.IDENTIFIER).Value
+
+	var index bool
+	if p.currentTokenKind() == lexer.COMMA {
+		p.expect(lexer.COMMA)
+		p.expect(lexer.IDENTIFIER)
+		index = true
+	}
+
+	p.expect(lexer.IN)
+	iterable := parse_expr(p, defalt_bp)
+	body := ast.ExpectStmt[ast.BlockStmt](parse_block_stmt(p)).Body
+
+	return ast.ForeachStmt {
+		Value: valueName,
+		Index: index,
+		Iterable: iterable,
+		Body: body,
 	}
 }

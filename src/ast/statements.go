@@ -35,3 +35,27 @@ type FunctionDeclarationStmt struct {
 }
 
 func (n FunctionDeclarationStmt) stmt () {}
+
+type IfStmt struct {
+	Condition Expr
+	Consequent Stmt
+	Alternate Stmt
+}
+
+func (n IfStmt) stmt () {}
+
+type ImportStmt struct {
+	Name string
+	From string
+}
+
+func (n ImportStmt) stmt () {}
+
+type ForeachStmt struct {
+	Value string
+	Index bool
+	Iterable Expr
+	Body []Stmt
+}
+
+func (n ForeachStmt) stmt () {}
