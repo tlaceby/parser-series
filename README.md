@@ -25,46 +25,65 @@ The language will also be able to handle static types and explicit/ types. Throu
 ## Language Syntax
 
 ```ts
-import math; // Expected STD Package
-import string;
-import bar from "./foo/bar.lang"; // User Defined Package
+import fs;
+import tasks;
+import myLib from "../lib/myLib.lang";
 
-const PI = math.PI;
-let result = math.sqrt(4);  // type inference
-let name: string = "Tyler"; // explicit types
+const MIN = 1;
+const MAX = 100;
+let numbers: []number;
+numbers = MIN..MAX;
 
-println("Hello world")
+if random.selectOne(choices) == 50 {
+  println("Your number was selected!");
+} else {
+  println("Your number was not selected");
+}
 
-foreach value in 1..10 {
+foreach value, index in choices {
+    println(value, index);
+}
+
+foreach value in choices {
     println(value);
 }
 
-if math.randint(100) >= 21 {
-    println("You may have a drink");
-} else {
-    println("You must be 21 to enjoy a drink");
+class Person {
+  let name: string;
+  let age: number;
+  let languages: []string = ["Go", "Javascript"];
+
+  fn mount (name: string, age: number) {
+    this.age = age;
+  }
+
+  fn birthday (): number {
+    this.age += 1;
+  }
+
+  fn greet () {
+    println("Hello my name is ", this.name);
+  }
 }
 
-// Function Declarations
-fn add (x number, y number): []number {
-    x + y; // Last statement evaluated inside a block is returned
+const p1 = new Person ("John Doe", 43);
+
+fn abs (n: number): number {
+	if n >= 0 {
+		n;
+	}
+
+	-n;
 }
 
-typeof math          // object
-typeof "Hello world" // string
-typeof 45.5          // number
-typeof [1, 2, 3]     // array
-typeof add           // function
-typeof null          // null
+const add = fn(x: number, y: number): number {
+	x + y;
+};
 
-const nums: []number = [1, 2, 3, 4, 5];
-nums[2] = 10;
-
-println(len("hello")) // 5
-println(string.lowercase("HELLO")) // hello
-
-
-// Fancy assignment if null syntax
-res ??= "odd";
+tasks.interval(fn(task: TaskInfo){
+	if task.time > time.second * 10 {
+		tasks.kill(task.id);
+	}
+}, 1000);
 
 ```
