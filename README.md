@@ -29,6 +29,8 @@ import fs;
 import tasks;
 import myLib from "../lib/myLib.lang";
 
+// This is a comment
+
 const MIN = 1;
 const MAX = 100;
 let numbers: []number;
