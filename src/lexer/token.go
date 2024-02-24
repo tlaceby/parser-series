@@ -7,9 +7,10 @@ type TokenKind int
 const (
 	EOF TokenKind = iota
 	NULL
+	TRUE
+	FALSE
 	NUMBER
 	STRING
-	BOOLEAN
 	IDENTIFIER
 
 	// Grouping & Braces
@@ -79,8 +80,8 @@ const (
 )
 
 var reserved_lu map[string]TokenKind = map[string]TokenKind{
-	"true":    BOOLEAN,
-	"false":   BOOLEAN,
+	"true":    TRUE,
+	"false":   FALSE,
 	"null":    NULL,
 	"let":     LET,
 	"const":   CONST,
@@ -104,14 +105,14 @@ type Token struct {
 }
 
 func (token Token) Debug() {
-	if token.kind == IDENTIFIER || token.kind == NUMBER || token.kind == BOOLEAN || token.kind == STRING {
-		fmt.Printf("%s(%s)\n", tokenKindString(token.kind), token.value)
+	if token.kind == IDENTIFIER || token.kind == NUMBER || token.kind == STRING {
+		fmt.Printf("%s(%s)\n", TokenKindString(token.kind), token.value)
 	} else {
-		fmt.Printf("%s()\n", tokenKindString(token.kind))
+		fmt.Printf("%s()\n", TokenKindString(token.kind))
 	}
 }
 
-func tokenKindString(kind TokenKind) string {
+func TokenKindString(kind TokenKind) string {
 	switch kind {
 	case EOF:
 		return "eof"
@@ -121,8 +122,10 @@ func tokenKindString(kind TokenKind) string {
 		return "number"
 	case STRING:
 		return "string"
-	case BOOLEAN:
-		return "boolean"
+	case TRUE:
+		return "true"
+	case FALSE:
+		return "false"
 	case IDENTIFIER:
 		return "identifier"
 	case OPEN_BRACKET:

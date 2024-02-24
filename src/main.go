@@ -1,13 +1,10 @@
 package main
 
 import (
-	"github.com/tlaceby/parser-series/src/lexer"
+	"github.com/tlaceby/parser-series/src/parser"
 )
 
 func main() {
-	tokens := lexer.Tokenize("let x = math.abs(45.32 * 3.2);\nlet zeroToTen = [0..10];")
-
-	for _, t := range tokens {
-		t.Debug()
-	}
+	source := "let x = 45.5 * 20;"
+	parser.Parse(source)
 }

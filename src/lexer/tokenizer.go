@@ -160,5 +160,6 @@ func commentHandler(lex *lexer, regex *regexp.Regexp) {
 	if match != nil {
 		// Advance past the entire comment.
 		lex.advanceN(match[1])
+		lex.line++
 	}
 }
