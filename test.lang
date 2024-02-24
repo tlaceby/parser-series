@@ -4,7 +4,8 @@ import myLib from "../lib/myLib.lang";
 
 const MIN = 1;
 const MAX = 100;
-const numbers: []number = MIN..MAX;
+let numbers: []number;
+numbers = MIN..MAX;
 
 if random.selectOne(choices) == 50 {
   println("Your number was selected!");
@@ -40,20 +41,20 @@ foreach value in choices {
 
 // const p1 = new Person ("John Doe", 43);
 
-fn abs (n: number): number {
-	if n >= 0 {
-		n;
-	}
+// fn abs (n: number): number {
+// 	if n >= 0 {
+// 		n;
+// 	}
 
-	-n;
-}
+// 	-n;
+// }
 
-const add = fn(x: number, y: number): number {
-	x + y;
-};
+// const add = fn(x: number, y: number): number {
+// 	x + y;
+// };
 
-tasks.interval(fn(task: TaskInfo){
-	if task.time > time.second * 10 {
-		tasks.kill(task.id);
-	}
-}, 1000);
+// tasks.interval(fn(task: TaskInfo){
+// 	if task.time > time.second * 10 {
+// 		tasks.kill(task.id);
+// 	}
+// }, 1000);

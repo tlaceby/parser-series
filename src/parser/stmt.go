@@ -54,9 +54,19 @@ func parse_var_decl_stmt (p *parser) ast.Stmt {
 		explicitType = parse_type(p, defalt_bp)
 	}
 
-	p.expect(lexer.ASSIGNMENT)
-	assignmentValue := parse_expr(p, assignment)
+	var assignmentValue ast.Expr
+	if p.currentTokenKind() != lexer.SEMI_COLON {
+		p.expect(lexer.ASSIGNMENT)
+		assignmentValue = parse_expr(p, assignment)
+	} else if explicitType == nil {
+		panic("Missing explicit type for variable declaration.")
+	}
+
 	p.expect(lexer.SEMI_COLON)
+
+	if (isConstant && assignmentValue == nil) {
+		panic("Cannot define constant variable without providing default value.")
+	}
 
 	return ast.VarDeclarationStmt{
 		Constant: isConstant,
