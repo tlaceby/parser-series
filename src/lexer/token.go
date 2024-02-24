@@ -100,15 +100,25 @@ var reserved_lu map[string]TokenKind = map[string]TokenKind{
 }
 
 type Token struct {
-	kind  TokenKind
-	value string
+	Kind  TokenKind
+	Value string
+}
+
+func (tk Token) IsOneOfMany (expectedTokens ...TokenKind) bool {
+	for _, expected := range expectedTokens {
+		if expected == tk.Kind {
+			return true
+		}
+	}
+
+	return false
 }
 
 func (token Token) Debug() {
-	if token.kind == IDENTIFIER || token.kind == NUMBER || token.kind == STRING {
-		fmt.Printf("%s(%s)\n", TokenKindString(token.kind), token.value)
+	if token.Kind == IDENTIFIER || token.Kind == NUMBER || token.Kind == STRING {
+		fmt.Printf("%s(%s)\n", TokenKindString(token.Kind), token.Value)
 	} else {
-		fmt.Printf("%s()\n", TokenKindString(token.kind))
+		fmt.Printf("%s()\n", TokenKindString(token.Kind))
 	}
 }
 
@@ -227,12 +237,4 @@ func newUniqueToken(kind TokenKind, value string) Token {
 	return Token{
 		kind, value,
 	}
-}
-
-func (token Token) Value() string {
-	return token.value
-}
-
-func (token Token) Kind() TokenKind {
-	return token.kind
 }

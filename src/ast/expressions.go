@@ -1,5 +1,9 @@
 package ast
 
+import (
+	"github.com/tlaceby/parser-series/src/lexer"
+)
+
 // --------------------
 // Literal Expressions
 // --------------------
@@ -28,7 +32,7 @@ func (n SymbolExpr) expr () {}
 
 type BinaryExpr struct {
 	Left Expr
-	Operation string
+	Operator lexer.Token
 	Right Expr
 }
 
@@ -40,3 +44,32 @@ type AssignmentExpr struct {
 }
 
 func (n AssignmentExpr) expr () {}
+
+type PrefixExpr struct {
+	Operator lexer.Token
+	Right Expr
+}
+
+func (n PrefixExpr) expr () {}
+
+type MemberExpr struct {
+	Member Expr
+	Property string
+}
+
+func (n MemberExpr) expr () {}
+
+type CallExpr struct {
+	Arguments []Expr
+	Method Expr
+}
+
+func (n CallExpr) expr () {}
+
+
+type ComputedExpr struct {
+	Member Expr
+	Property Expr
+}
+
+func (n ComputedExpr) expr () {}

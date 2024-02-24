@@ -10,17 +10,28 @@ type VarDeclarationStmt struct {
 	Identifier string
 	Constant bool
 	AssignedValue Expr
-
-	// Type Info if your language had types
-	// eg  infered or explicit
+	ExplicitType Type
 }
 
 
 func (n VarDeclarationStmt) stmt () {}
 
-// Represents all expressions which would otherwise need semicolons etc..
 type ExpressionStmt struct {
 	Expression Expr
 }
 
 func (n ExpressionStmt) stmt () {}
+
+type Parameter struct {
+	Name string
+	Type Type
+}
+
+type FunctionDeclarationStmt struct {
+	Parameters []Parameter
+	Name string
+	Body []Stmt
+	ReturnType Type
+}
+
+func (n FunctionDeclarationStmt) stmt () {}

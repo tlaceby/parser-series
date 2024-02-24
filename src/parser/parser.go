@@ -12,6 +12,7 @@ type parser struct {
 
 func createParser (tokens []lexer.Token) *parser {
 	createTokenLookups()
+	createTypeTokenLookups()
 
 	p := &parser{
 		tokens: tokens,
@@ -21,7 +22,15 @@ func createParser (tokens []lexer.Token) *parser {
 	return p
 }
 
-func Parse (source string) ast.Stmt {
+func Parse (source string) ast.BlockStmt {
 	p := createParser(lexer.Tokenize(source))
-	return parse_block_stmt(p)
+	body := make([]ast.Stmt, 0)
+
+	for p.hasTokens() {
+		body = append(body, parse_stmt(p))
+	}
+
+	return ast.BlockStmt{
+		Body: body,
+	}
 }

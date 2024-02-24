@@ -14,13 +14,10 @@ const (
 	relational
 	additive
 	multiplicative
-	unary binding_power = 7
-	prefix
-	cast
-	postfix binding_power = 8
+	unary
 	call
 	member
-	primary binding_power = 9
+	primary
 )
 
 type stmt_handler func (p *parser) ast.Stmt
@@ -38,33 +35,64 @@ var led_lu = led_lookup{}
 var stmt_lu =stmt_lookup{}
 
 
-func defInfix (kind lexer.TokenKind, bp binding_power, led_fn led_handler) {
+func led (kind lexer.TokenKind, bp binding_power, led_fn led_handler) {
 	bp_lu[kind] = bp
 	led_lu[kind] = led_fn
 }
 
-func defPrimary (kind lexer.TokenKind,nud_fn nud_handler) {
+func nud (kind lexer.TokenKind, bp binding_power, nud_fn nud_handler) {
 	bp_lu[kind] = primary
 	nud_lu[kind] = nud_fn
 }
 
-func defStmt (kind lexer.TokenKind, stmt_fn stmt_handler) {
+func stmt (kind lexer.TokenKind, stmt_fn stmt_handler) {
 	bp_lu[kind] = defalt_bp
 	stmt_lu[kind] = stmt_fn
 }
 
 func createTokenLookups () {
-	defInfix(lexer.PLUS, additive, parse_binary_expr)
-	defInfix(lexer.DASH, additive, parse_binary_expr)
-	defInfix(lexer.SLASH, multiplicative, parse_binary_expr)
-	defInfix(lexer.STAR, multiplicative, parse_binary_expr)
-	defInfix(lexer.PERCENT, multiplicative, parse_binary_expr)
+	// Assignment
+	led(lexer.ASSIGNMENT, assignment, parse_assignment_expr)
+	led(lexer.PLUS_EQUALS, assignment, parse_assignment_expr)
+	led(lexer.MINUS_EQUALS, assignment, parse_assignment_expr)
 
-	defPrimary(lexer.NUMBER, parse_primary_expr)
-	defPrimary(lexer.STRING, parse_primary_expr)
-	defPrimary(lexer.IDENTIFIER, parse_primary_expr)
+	// Logical
+	led(lexer.AND, logical, parse_binary_expr)
+	led(lexer.OR, logical, parse_binary_expr)
 
-	defStmt(lexer.OPEN_CURLY, parse_block_stmt)
-	defStmt(lexer.LET, parse_var_decl_stmt)
-	defStmt(lexer.CONST, parse_var_decl_stmt)
+	// Relational
+	led(lexer.LESS, relational, parse_binary_expr)
+	led(lexer.LESS_EQUALS, relational, parse_binary_expr)
+	led(lexer.GREATER, relational, parse_binary_expr)
+	led(lexer.GREATER_EQUALS, relational, parse_binary_expr)
+
+	// Additive & Multiplicitave
+	led(lexer.PLUS, additive, parse_binary_expr)
+	led(lexer.DASH, additive, parse_binary_expr)
+	led(lexer.SLASH, multiplicative, parse_binary_expr)
+	led(lexer.STAR, multiplicative, parse_binary_expr)
+	led(lexer.PERCENT, multiplicative, parse_binary_expr)
+
+	// Literals & Symbols
+	nud(lexer.NUMBER, primary, parse_primary_expr)
+	nud(lexer.STRING, primary, parse_primary_expr)
+	nud(lexer.IDENTIFIER, primary, parse_primary_expr)
+
+	// Unary/Prefix
+	nud(lexer.TYPEOF, unary, parse_prefix_expr)
+	nud(lexer.DASH, unary, parse_prefix_expr)
+	nud(lexer.NOT, unary, parse_prefix_expr)
+
+	// Member / Computed // Call
+	led(lexer.DOT, member, parse_member_expr)
+	led(lexer.OPEN_BRACKET, member, parse_member_expr)
+	led(lexer.OPEN_PAREN, call, parse_call_expr)
+
+	// Grouping Expr
+	nud(lexer.OPEN_PAREN, defalt_bp, parse_grouping_expr)
+
+	stmt(lexer.OPEN_CURLY, parse_block_stmt)
+	stmt(lexer.LET, parse_var_decl_stmt)
+	stmt(lexer.CONST, parse_var_decl_stmt)
+	stmt(lexer.FN, parse_fn_declaration)
 }

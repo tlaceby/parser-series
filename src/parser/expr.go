@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/tlaceby/parser-series/src/ast"
 	"github.com/tlaceby/parser-series/src/lexer"
@@ -31,10 +32,97 @@ func parse_expr (p *parser, bp binding_power) ast.Expr {
 	return left
 }
 
+func parse_prefix_expr (p *parser) ast.Expr {
+	operatorToken := p.advance()
+	expr := parse_expr(p, unary)
+
+	return ast.PrefixExpr{
+		Operator: operatorToken,
+		Right: expr,
+	}
+}
+
+func parse_assignment_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr {
+		p.advance()
+		rhs := parse_expr(p, bp)
+
+		return ast.AssignmentExpr{
+			Assigne: left,
+			AssignedValue: rhs,
+		}
+	}
+
 func parse_binary_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr {
-	panic("Binary Expr not implimented")
+	operatorToken := p.advance()
+	right := parse_expr(p, defalt_bp)
+
+	return ast.BinaryExpr{
+		Left: left,
+		Operator: operatorToken,
+		Right: right,
+	}
 }
 
 func parse_primary_expr (p *parser) ast.Expr {
-	panic("Primary Expr not implimented")
+	switch	p.currentTokenKind() {
+		case lexer.NUMBER:
+			number, _ := strconv.ParseFloat(p.advance().Value, 64)
+			return ast.NumberExpr{
+				Value: number,
+			}
+		case lexer.STRING:
+			return ast.StringExpr{
+				Value: p.advance().Value,
+			}
+		case lexer.IDENTIFIER:
+			return ast.SymbolExpr{
+				Value: p.advance().Value,
+			}
+		default:
+			panic(fmt.Sprintf("Cannot create primary_expr from %s\n", lexer.TokenKindString(p.currentTokenKind())))
+	}
 }
+
+func parse_member_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr {
+	isComputed := p.advance().Kind == lexer.OPEN_BRACKET
+
+	if isComputed {
+		rhs := parse_expr(p, bp)
+		p.expect(lexer.CLOSE_BRACKET)
+		return ast.ComputedExpr{
+			Member: left,
+			Property: rhs,
+		}
+	}
+
+	return ast.MemberExpr{
+		Member: left,
+		Property: p.expect(lexer.IDENTIFIER).Value,
+	}
+}
+
+func parse_grouping_expr (p *parser) ast.Expr {
+	p.expect(lexer.OPEN_PAREN)
+	expr := parse_expr(p, defalt_bp)
+	p.expect(lexer.OPEN_PAREN)
+	return expr
+}
+
+func parse_call_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr {
+		p.advance()
+		arguments := make([]ast.Expr, 0)
+
+		for p.hasTokens() && p.currentTokenKind() != lexer.CLOSE_PAREN {
+			arguments = append(arguments, parse_expr(p, assignment))
+
+			if !p.currentToken().IsOneOfMany(lexer.EOF, lexer.CLOSE_PAREN) {
+				p.expect(lexer.COMMA)
+			}
+		}
+
+		p.expect(lexer.CLOSE_PAREN)
+		return ast.CallExpr{
+			Method: left,
+			Arguments: arguments,
+		}
+	}

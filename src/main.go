@@ -1,10 +1,13 @@
 package main
 
 import (
+	"github.com/sanity-io/litter"
 	"github.com/tlaceby/parser-series/src/parser"
 )
 
 func main() {
-	source := "let x = 45.5 * 20;"
-	parser.Parse(source)
+	source := "fn add (x: number, y: number): number { x + y; }"
+	ast := parser.Parse(source)
+
+	litter.Dump(ast)
 }

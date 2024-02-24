@@ -20,7 +20,6 @@ The language we will be building will be derivation of the golang. It will be as
   - Translating between AST Forms
   - Recursive Descent
 
-
 ## Language Syntax
 
 ```ts
@@ -28,14 +27,13 @@ import math; // Expected STD Package
 import string;
 import bar from "./foo/bar.lang"; // User Defined Package
 
-
 const PI = math.PI;
-let result = math.sqrt(4);
+let result = math.sqrt(4);  // type inference
+let name: string = "Tyler"; // explicit types
 
 println("Hello world")
-println($"sqrt(4) = {result}"); // Template Strings
 
-foreach (value, index in [1..10]) {
+foreach (value in [1..10]) {
     println(value);
 }
 
@@ -46,7 +44,7 @@ if (math.randint(100) >= 21) {
 }
 
 // Function Declarations
-fn add (x, y) {
+fn add (x number, y number): number {
     x + y; // Last statement evaluated inside a block is returned
 }
 
@@ -57,7 +55,7 @@ typeof [1, 2, 3]     // array
 typeof add           // function
 typeof null          // null
 
-const nums = [1, 2, 3, 4, 5];
+const nums: []number = [1, 2, 3, 4, 5];
 nums[2] = 10;
 
 println(len("hello")) // 5
@@ -70,20 +68,6 @@ let res = if (math.randint(10) % 2 == 0) {
 
 // Fancy assignment if null syntax
 res ??= "odd";
-
-// Objects & Classes
-class Person {
-    fn mount (name, age) {
-        this.name = name;
-        this.age = age;
-    }
-}
-
-// This is simply a Class with no-name already created with the name,age properties which inherits from the Object class.
-const person = {
-    name: "Tyler",
-    age: 23,
-};
 
 
 ```
