@@ -94,3 +94,9 @@ type ArrayLiteral struct {
 }
 
 func (n ArrayLiteral) expr () {}
+
+type NewExpr struct {
+	Instantiation CallExpr
+}
+
+func (n NewExpr) expr () {}

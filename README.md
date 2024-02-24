@@ -142,70 +142,75 @@ tasks.interval(fn(task: TaskInfo){
 
 ### Code Example
 
-Puting it all together here is a sample program which can be parsed with the parser we will be building together in this series.
+Puting it all together here is a sample program:
 
 ```ts
 import fs;
-import tasks;
-import myLib from "../lib/myLib.lang";
+import path;
+import time;
 
-// This is a comment
+class DirectoryReader {
+  let directoryPath: string;
 
-const MIN = 1;
-const MAX = 100;
-
-let numbers: []number;
-numbers = MIN..MAX; // returns the numbers [1, 2, 3, ..., 99, 100] as an array.
-
-if random.selectOne(choices) == 50 {
-  println("Your number was selected!");
-} else {
-  println("Your number was not selected");
-}
-
-foreach value, index in choices {
-    println(value, index);
-}
-
-foreach value in choices {
-    println(value);
-}
-
-class Person {
-  let name: string;
-  let age: number;
-  let languages: []string = ["Go", "Javascript"];
-
-  fn mount (name: string, age: number) {
-    this.age = age;
+  fn mount(directoryPath: string) {
+    this.directoryPath = directoryPath;
   }
 
-  fn birthday (): number {
-    this.age += 1;
+  fn readRecentFiles() {
+    let allFiles: []string = fs.readDir(this.directoryPath);
+    let recentFiles: []string = [];
+
+    foreach file in allFiles {
+      let fullPath: string = path.join(this.directoryPath, file);
+      let fileInfo: FileInfo = fs.stat(fullPath);
+      if this.isFileRecent(fileInfo.creationTime) {
+        recentFiles.push(fullPath);
+      }
+    }
+
+    foreach file in recentFiles {
+      println(file, fs.stat(file).creationTime);
+    }
   }
 
-  fn greet () {
-    println("Hello my name is ", this.name);
+  fn isFileRecent(creationTime: Time): boolean {
+    let twentyFourHoursAgo: Time = time.now() - time.hours(24);
+    creationTime > twentyFourHoursAgo;
   }
 }
 
-const p1 = new Person ("John Doe", 43);
-
-fn abs (n: number): number {
-  if n >= 0 {
-    n;
-  }
-
-  -n;
+fn main() {
+  const directory: string = "/path/to/directory";
+  const reader = new DirectoryReader();
+  reader.mount(directory);
+  reader.readRecentFiles();
 }
 
-const add = fn(x: number, y: number): number {
-  x + y;
-};
+main();
 
-tasks.interval(fn(task: TaskInfo){
-  if task.time > time.second * 10 {
-    tasks.kill(task.id);
-  }
-}, 1000);
 ```
+
+This sample program demonstrates the versatility and power of the parser we're building together. It showcases several language features, including:
+
+- Imports: It begins by importing necessary modules fs, path, and time, which are essential for file and time operations.
+
+- Class Definition: The DirectoryReader class is defined with methods for mounting a directory and reading files that were created within the last 24 hours. This demonstrates the object-oriented capabilities of our language.
+
+- Variable Declarations: Variables are declared using let for mutable variables and const for constants, showing the language's capability to handle different types of data storage.
+
+- Conditional Logic and Loops: The program uses foreach loops to iterate over files and an if statement to filter recent files, illustrating how our language handles control flow.
+
+- Function Definition and Invocation: The main function is defined and invoked, which uses an instance of DirectoryReader to perform its operations. This shows how functions are first-class citizens in our language.
+
+By parsing this program, our parser will generate an Abstract Syntax Tree (AST) that represents the program's structure. This AST can then be used for further code generation, interpretation, or compilation, depending on the end goal of your language project.
+
+This example serves as a practical application of all the concepts we've covered in this series. It ties together lexing, parsing, AST generation, and gives a glimpse into how these components work together to interpret or compile a high-level program written in our custom language.
+
+By following this series and implementing your own lexer/parser, you're not just learning the mechanics of these processes but also how to apply them to create a language that can serve real-world needs, similar to how Go, Typescript, and C# are used today.
+Next Steps
+
+-------
+
+In upcoming series, we may dive deeper into error handling, optimization techniques for our parser, typechecking, code-generation, and interpretation.
+
+Stay tuned, and happy coding!

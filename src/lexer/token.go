@@ -63,6 +63,7 @@ const (
 	LET
 	CONST
 	CLASS
+	NEW
 	IMPORT
 	FROM
 	FN
@@ -86,6 +87,7 @@ var reserved_lu map[string]TokenKind = map[string]TokenKind{
 	"let":     LET,
 	"const":   CONST,
 	"class":   CLASS,
+	"new":     NEW,
 	"import":  IMPORT,
 	"from":    FROM,
 	"fn":      FN,
@@ -208,6 +210,8 @@ func TokenKindString(kind TokenKind) string {
 		return "const"
 	case CLASS:
 		return "class"
+	case NEW:	
+		return "new"
 	case IMPORT:
 		return "import"
 	case FROM:

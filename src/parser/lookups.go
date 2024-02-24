@@ -95,6 +95,14 @@ func createTokenLookups () {
 	// Grouping Expr
 	nud(lexer.OPEN_PAREN, defalt_bp, parse_grouping_expr)
 	nud(lexer.FN, defalt_bp, parse_fn_expr)
+	nud(lexer.NEW, defalt_bp, func(p *parser) ast.Expr {
+		p.advance()
+		classInstantiation := parse_expr(p, defalt_bp)
+
+		return ast.NewExpr{
+			Instantiation: ast.ExpectExpr[ast.CallExpr](classInstantiation),
+		}
+	})
 
 	stmt(lexer.OPEN_CURLY, parse_block_stmt)
 	stmt(lexer.LET, parse_var_decl_stmt)
