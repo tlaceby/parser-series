@@ -21,40 +21,40 @@ foreach value in choices {
     println(value);
 }
 
-// class Person {
-//   let name: string;
-//   let age: number;
-//   let languages = ["Go", "Javascript"];
+class Person {
+  let name: string;
+  let age: number;
+  let languages: []string = ["Go", "Javascript"];
 
-//   fn mount (name: string, age: number) {
-//     this.age = age;
-//   }
+  fn mount (name: string, age: number) {
+    this.age = age;
+  }
 
-//   fn birthday () {
-//     this.age += 1;
-//   }
+  fn birthday (): number {
+    this.age += 1;
+  }
 
-//   fn greet () {
-//     println("Hello my name is ", this.name);
-//   }
-// }
+  fn greet () {
+    println("Hello my name is ", this.name);
+  }
+}
 
-// const p1 = new Person ("John Doe", 43);
+const p1 = new Person ("John Doe", 43);
 
-// fn abs (n: number): number {
-// 	if n >= 0 {
-// 		n;
-// 	}
+fn abs (n: number): number {
+	if n >= 0 {
+		n;
+	}
 
-// 	-n;
-// }
+	-n;
+}
 
-// const add = fn(x: number, y: number): number {
-// 	x + y;
-// };
+const add = fn(x: number, y: number): number {
+	x + y;
+};
 
-// tasks.interval(fn(task: TaskInfo){
-// 	if task.time > time.second * 10 {
-// 		tasks.kill(task.id);
-// 	}
-// }, 1000);
+tasks.interval(fn(task: TaskInfo){
+	if task.time > time.second * 10 {
+		tasks.kill(task.id);
+	}
+}, 1000);

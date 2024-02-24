@@ -88,3 +88,9 @@ type FunctionExpr struct {
 }
 
 func (n FunctionExpr) expr () {}
+
+type ArrayLiteral struct {
+	Contents []Expr
+}
+
+func (n ArrayLiteral) expr () {}

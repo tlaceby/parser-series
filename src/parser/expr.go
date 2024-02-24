@@ -43,14 +43,15 @@ func parse_prefix_expr (p *parser) ast.Expr {
 }
 
 func parse_assignment_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr {
-		p.advance()
-		rhs := parse_expr(p, bp)
+	p.advance()
+	rhs := parse_expr(p, bp)
 
-		return ast.AssignmentExpr{
-			Assigne: left,
-			AssignedValue: rhs,
-		}
+	return ast.AssignmentExpr{
+		Assigne: left,
+		AssignedValue: rhs,
 	}
+}
+
 
 func parse_range_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr {
 	p.advance()
@@ -107,6 +108,25 @@ func parse_member_expr (p *parser, left ast.Expr, bp binding_power) ast.Expr {
 	return ast.MemberExpr{
 		Member: left,
 		Property: p.expect(lexer.IDENTIFIER).Value,
+	}
+}
+
+func parse_array_literal_expr (p* parser) ast.Expr {
+	p.expect(lexer.OPEN_BRACKET)
+	arrayContents := make([]ast.Expr,0)
+
+	for p.hasTokens() && p.currentTokenKind() != lexer.CLOSE_BRACKET {
+		arrayContents = append(arrayContents, parse_expr(p, logical))
+
+		if !p.currentToken().IsOneOfMany(lexer.EOF, lexer.CLOSE_BRACKET) {
+			p.expect(lexer.COMMA)
+		}
+	}
+
+	p.expect(lexer.CLOSE_BRACKET)
+
+	return ast.ArrayLiteral{
+		Contents: arrayContents,
 	}
 }
 

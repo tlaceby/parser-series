@@ -59,3 +59,10 @@ type ForeachStmt struct {
 }
 
 func (n ForeachStmt) stmt () {}
+
+type ClassDeclarationStmt struct {
+	Name string
+	Body []Stmt
+}
+
+func (n ClassDeclarationStmt) stmt () {}

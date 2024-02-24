@@ -185,3 +185,14 @@ func parse_foreach_stmt (p *parser) ast.Stmt {
 		Body: body,
 	}
 }
+
+func parse_class_declaration_stmt (p *parser) ast.Stmt {
+	p.advance()
+	className := p.expect(lexer.IDENTIFIER).Value
+	classBody := parse_block_stmt(p)
+
+	return ast.ClassDeclarationStmt{
+		Name: className,
+		Body: ast.ExpectStmt[ast.BlockStmt](classBody).Body,
+	}
+}

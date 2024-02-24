@@ -85,6 +85,7 @@ func createTokenLookups () {
 	nud(lexer.TYPEOF, unary, parse_prefix_expr)
 	nud(lexer.DASH, unary, parse_prefix_expr)
 	nud(lexer.NOT, unary, parse_prefix_expr)
+	nud(lexer.OPEN_BRACKET, primary, parse_array_literal_expr)
 
 	// Member / Computed // Call
 	led(lexer.DOT, member, parse_member_expr)
@@ -102,4 +103,5 @@ func createTokenLookups () {
 	stmt(lexer.IF, parse_if_stmt)
 	stmt(lexer.IMPORT, parse_import_stmt)
 	stmt(lexer.FOREACH, parse_foreach_stmt)
+	stmt(lexer.CLASS, parse_class_declaration_stmt)
 }
