@@ -1,0 +1,38 @@
+class DirectoryReader {
+  let directoryPath: string;
+
+  fn mount(directoryPath: string) {
+    this.directoryPath = directoryPath;
+  }
+
+  fn readRecentFiles() {
+    let allFiles: []string = fs.readDir(this.directoryPath);
+    let recentFiles: []string = [];
+
+    foreach file in allFiles {
+      let fullPath: string = path.join(this.directoryPath, file);
+      let fileInfo: FileInfo = fs.stat(fullPath);
+      if this.isFileRecent(fileInfo.creationTime) {
+        recentFiles.push(fullPath);
+      }
+    }
+
+    foreach file in recentFiles {
+      println(file, fs.stat(file).creationTime);
+    }
+  }
+
+  fn isFileRecent(creationTime: Time): boolean {
+    let twentyFourHoursAgo: Time = time.now() - time.hours(24);
+    creationTime > twentyFourHoursAgo;
+  }
+}
+
+fn main() {
+  const directory: string = "/path/to/directory";
+  const reader = new DirectoryReader();
+  reader.mount(directory);
+  reader.readRecentFiles();
+}
+
+main();
