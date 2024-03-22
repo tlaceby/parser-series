@@ -27,10 +27,6 @@ func (lex *lexer) push (token Token) {
 	lex.Tokens = append(lex.Tokens, token)
 }
 
-func (lex *lexer) at () byte {
-	return lex.source[lex.pos]
-}
-
 func (lex *lexer) remainder () string {
 	return lex.source[lex.pos:]
 }
