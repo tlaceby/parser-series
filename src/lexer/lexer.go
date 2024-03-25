@@ -5,37 +5,37 @@ import (
 	"regexp"
 )
 
-type regexHandler func (lex *lexer, regex *regexp.Regexp)
+type regexHandler func(lex *lexer, regex *regexp.Regexp)
 
 type regexPattern struct {
-	regex *regexp.Regexp
+	regex   *regexp.Regexp
 	handler regexHandler
 }
 
 type lexer struct {
 	patterns []regexPattern
-	Tokens []Token
-	source string
-	pos    int
+	Tokens   []Token
+	source   string
+	pos      int
 }
 
-func (lex *lexer) advanceN (n int) {
+func (lex *lexer) advanceN(n int) {
 	lex.pos += n
 }
 
-func (lex *lexer) push (token Token) {
+func (lex *lexer) push(token Token) {
 	lex.Tokens = append(lex.Tokens, token)
 }
 
-func (lex *lexer) remainder () string {
+func (lex *lexer) remainder() string {
 	return lex.source[lex.pos:]
 }
 
-func (lex *lexer) at_eof () bool {
+func (lex *lexer) at_eof() bool {
 	return lex.pos >= len(lex.source)
 }
 
-func Tokenize (source string) []Token {
+func Tokenize(source string) []Token {
 	lex := createLexer(source)
 
 	// 10 + [5]
@@ -63,7 +63,7 @@ func Tokenize (source string) []Token {
 	return lex.Tokens
 }
 
-func defaultHandler (kind TokenKind, value string) regexHandler {
+func defaultHandler(kind TokenKind, value string) regexHandler {
 	return func(lex *lexer, regex *regexp.Regexp) {
 		// advance the lexer's position past the value we just reached
 		lex.advanceN(len(value))
@@ -71,9 +71,9 @@ func defaultHandler (kind TokenKind, value string) regexHandler {
 	}
 }
 
-func createLexer (source string) *lexer {
+func createLexer(source string) *lexer {
 	return &lexer{
-		pos: 0,
+		pos:    0,
 		source: source,
 		Tokens: make([]Token, 0),
 		patterns: []regexPattern{
@@ -117,27 +117,26 @@ func createLexer (source string) *lexer {
 	}
 }
 
-func skipHandler (lex *lexer, regex *regexp.Regexp) {
+func skipHandler(lex *lexer, regex *regexp.Regexp) {
 	match := regex.FindStringIndex(lex.remainder())
 	lex.advanceN(match[1])
 }
 
-func numberHandler (lex *lexer, regex *regexp.Regexp) {
+func numberHandler(lex *lexer, regex *regexp.Regexp) {
 	match := regex.FindString(lex.remainder())
 	lex.push(NewToken(NUMBER, match))
 	lex.advanceN(len(match))
 }
 
-func stringHandler (lex *lexer, regex *regexp.Regexp) {
+func stringHandler(lex *lexer, regex *regexp.Regexp) {
 	match := regex.FindStringIndex(lex.remainder())
-	stringLiteral := lex.remainder()[match[0] + 1 :match[1] - 1]
+	stringLiteral := lex.remainder()[match[0]+1 : match[1]-1]
 
 	lex.push(NewToken(STRING, stringLiteral))
 	lex.advanceN(len(stringLiteral) + 2)
 }
 
-
-func symbolHandler (lex *lexer, regex *regexp.Regexp) {
+func symbolHandler(lex *lexer, regex *regexp.Regexp) {
 	value := regex.FindString(lex.remainder())
 
 	if kind, exists := reserved_lu[value]; exists {
@@ -145,6 +144,6 @@ func symbolHandler (lex *lexer, regex *regexp.Regexp) {
 	} else {
 		lex.push(NewToken(IDENTIFIER, value))
 	}
-	
+
 	lex.advanceN(len(value))
 }

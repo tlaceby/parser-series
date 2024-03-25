@@ -67,11 +67,11 @@ const (
 )
 
 var reserved_lu map[string]TokenKind = map[string]TokenKind{
-	"let": LET,
-	"const": CONST,
-	"class": CLASS,
-	"new": NEW,
-	"import": IMPORT,
+	"let":     LET,
+	"const":   CONST,
+	"class":   CLASS,
+	"new":     NEW,
+	"import":  IMPORT,
 	"from":    FROM,
 	"fn":      FN,
 	"if":      IF,
@@ -81,15 +81,15 @@ var reserved_lu map[string]TokenKind = map[string]TokenKind{
 	"for":     FOR,
 	"export":  EXPORT,
 	"typeof":  TYPEOF,
-	"in":  IN,
-} 
+	"in":      IN,
+}
 
 type Token struct {
-	Kind TokenKind
+	Kind  TokenKind
 	Value string
 }
 
-func (token Token) isOneOfMany (expectedTokens ...TokenKind) bool {
+func (token Token) isOneOfMany(expectedTokens ...TokenKind) bool {
 	for _, expected := range expectedTokens {
 		if expected == token.Kind {
 			return true
@@ -99,7 +99,7 @@ func (token Token) isOneOfMany (expectedTokens ...TokenKind) bool {
 	return false
 }
 
-func (token Token) Debug () {
+func (token Token) Debug() {
 	if token.isOneOfMany(IDENTIFIER, NUMBER, STRING) {
 		fmt.Printf("%s (%s)\n", TokenKindString(token.Kind), token.Value)
 	} else {
@@ -107,13 +107,13 @@ func (token Token) Debug () {
 	}
 }
 
-func NewToken (kind TokenKind, value string) Token {
+func NewToken(kind TokenKind, value string) Token {
 	return Token{
 		kind, value,
 	}
 }
 
-func TokenKindString (kind TokenKind) string {
+func TokenKindString(kind TokenKind) string {
 	switch kind {
 	case EOF:
 		return "eof"
@@ -191,7 +191,7 @@ func TokenKindString (kind TokenKind) string {
 		return "const"
 	case CLASS:
 		return "class"
-	case NEW:	
+	case NEW:
 		return "new"
 	case IMPORT:
 		return "import"
